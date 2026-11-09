@@ -1,0 +1,28 @@
+# Render blueprint. Create a "Blueprint" service from this repo, then set the secret values in the dashboard.
+services:
+  - type: web
+    name: kitsmith
+    runtime: node
+    plan: starter            # a paid plan is needed so the disk below persists
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: DATA_DIR
+        value: /var/data
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: OWNER_CODE
+        sync: false
+      - key: BRAND_NAME
+        value: Kitsmith
+      - key: BUY_URL
+        sync: false
+      - key: SITE_URL
+        sync: false
+    disk:
+      name: kitsmith-data
+      mountPath: /var/data
+      sizeGB: 1

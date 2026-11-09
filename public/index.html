@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kitsmith: build a digital product from what you know | Synthesise AI alternative</title>
+<meta name="description" content="Turn what you know into a digital product you can sell. Find your idea, plan it, and draft the whole guide or course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" id="brand">Kitsmith</a>
+    <nav>
+      <a href="#how">How it works</a>
+      <a href="/synthesise-ai-alternative" class="keep">Synthesise AI alternative</a>
+      <a href="#app">Start</a>
+      <span class="pill" id="creditPill" hidden></span>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <p class="demo-banner" id="demoBanner" hidden>Demo mode: results are sample text. Add an API key on the server for real output.</p>
+    <h1>Turn what you know into a product you can sell.</h1>
+    <p class="lede">Tell it what you know. It finds the idea worth building, plans the product, and drafts the whole guide or video course, section by section. You edit it and sell it.</p>
+    <p class="cta-row"><a class="btn" href="#app">Start building</a> <a class="btn ghost" id="buyLink" href="#" hidden>Get an access code</a></p>
+  </section>
+
+  <section class="wrap rules" id="how">
+    <h2>How it works</h2>
+    <ol class="steps">
+      <li><span class="n">1</span><div><h3>Tell it what you know</h3><p>A few sentences about your skills and what you have done. Nothing else needed.</p></div></li>
+      <li><span class="n">2</span><div><h3>Pick the idea</h3><p>You get three product ideas with the audience, the problem, and a cheap way to test demand before you build.</p></div></li>
+      <li><span class="n">3</span><div><h3>Approve the blueprint</h3><p>A step-by-step path from your customer's starting point to a clear result.</p></div></li>
+      <li><span class="n">4</span><div><h3>Draft the product</h3><p>A written guide or a video course with spoken scripts, one section at a time. Plus the sales page text.</p></div></li>
+      <li><span class="n">5</span><div><h3>Edit and export</h3><p>Download it, print it to PDF, and publish. The draft is yours to improve with real examples.</p></div></li>
+    </ol>
+    <p class="note">The writing is a first draft. You add your own real examples and results before selling. It will not invent customers, numbers or reviews.</p>
+  </section>
+
+  <section class="wrap app" id="app">
+    <div class="gate" id="gate">
+      <h2>Enter your access code</h2>
+      <form id="gateForm" class="row">
+        <input id="codeInput" type="text" autocomplete="off" placeholder="KS-XXXXXXXXXX" aria-label="Access code">
+        <button class="btn" type="submit">Unlock</button>
+      </form>
+      <p class="err" id="gateErr" role="alert"></p>
+    </div>
+
+    <div id="work" hidden>
+      <div class="progress" id="progress"></div>
+
+      <div class="panel" id="p1">
+        <h2>1. About you</h2>
+        <label for="expertise">What do you know or do well?</label>
+        <textarea id="expertise" rows="5" placeholder="Example: I run a student club, I have built websites for small businesses, I study economics and tutor first-years."></textarea>
+        <label for="proof">What have you done that shows it? <span class="opt">optional</span></label>
+        <textarea id="proof" rows="3" placeholder="Results, projects, jobs, grades, followers, anything real."></textarea>
+        <label for="audience">Who would you like to help? <span class="opt">optional</span></label>
+        <input id="audience" type="text" placeholder="Leave blank and it will suggest audiences.">
+        <label for="format">Format</label>
+        <select id="format"><option value="">Not sure</option><option value="guide">Written guide (PDF)</option><option value="course">Video course (scripts)</option></select>
+        <p><button class="btn" id="go1">Find my best ideas</button> <span class="cost">uses 1 credit</span></p>
+        <p class="err" id="e1" role="alert"></p>
+      </div>
+
+      <div class="panel" id="p2" hidden>
+        <h2>2. Pick an idea</h2>
+        <p class="summary" id="summary"></p>
+        <div id="ideas"></div>
+        <p class="note">"Fit" is the AI's own 1 to 10 judgment from what you wrote. It is not market data. Test demand with the check listed on each idea.</p>
+        <p><button class="btn ghost" id="back2">Edit my answers</button></p>
+      </div>
+
+      <div class="panel" id="p3" hidden>
+        <h2>3. Blueprint</h2>
+        <div id="blueprint"></div>
+        <p class="row-gap">
+          <label for="fmt3" class="inline">Build as</label>
+          <select id="fmt3"><option value="guide">Written guide</option><option value="course">Video course</option></select>
+          <button class="btn ghost" id="regen3">Rebuild blueprint (1 credit)</button>
+          <button class="btn" id="go3">Start building</button>
+        </p>
+        <p class="err" id="e3" role="alert"></p>
+      </div>
+
+      <div class="panel" id="p4" hidden>
+        <h2>4. Build</h2>
+        <p class="note">Each section uses 1 credit. Generate them one by one, or all at once.</p>
+        <p><button class="btn" id="genAll">Generate all remaining</button> <button class="btn ghost" id="stopAll" hidden>Stop</button> <button class="btn ghost" id="toExport">Go to export</button></p>
+        <ul class="sections" id="sections"></ul>
+        <p class="err" id="e4" role="alert"></p>
+      </div>
+
+      <div class="panel" id="p5" hidden>
+        <h2>5. Export</h2>
+        <p>Combined document of everything generated so far.</p>
+        <p class="row-gap">
+          <button class="btn" id="dlMd">Download Markdown</button>
+          <button class="btn" id="dlHtml">Download HTML</button>
+          <button class="btn" id="printPdf">Print or save as PDF</button>
+        </p>
+        <div class="preview" id="preview"></div>
+        <p><button class="btn ghost" id="reset">Start a new product</button></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap foot"><p id="footBrand">Kitsmith</p><p><a href="/synthesise-ai-alternative">Comparison: Kitsmith vs Synthesise AI</a></p><p class="note">AI-written drafts can contain mistakes. Check facts, add your own examples, and follow the rules of wherever you sell.</p></footer>
+<script src="/app.js"></script>
+</body>
+</html>

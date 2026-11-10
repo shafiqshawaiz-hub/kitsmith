@@ -29,7 +29,7 @@ const DEMO = !process.env.ANTHROPIC_API_KEY;
 const client = DEMO ? null : new Anthropic();
 
 const MAX_BODY = 60_000;
-const MIME = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".png": "image/png" };
+const MIME = { ".txt": "text/plain; charset=utf-8", ".xml": "application/xml; charset=utf-8", ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".svg": "image/svg+xml", ".ico": "image/x-icon", ".png": "image/png" };
 
 // ---- helpers ----
 const hits = new Map();
@@ -218,13 +218,33 @@ async function api(req, res, pathname) {
 }
 
 // ---- static ----
+// Pages listed in the sitemap (file is relative to public/). Add new content pages here.
+const PAGES = [
+  { path: "/", file: "index.html", pri: "1.0", freq: "weekly" },
+  { path: "/synthesise-ai-alternative", file: "synthesise-ai-alternative.html", pri: "0.9", freq: "monthly" },
+  { path: "/synthesise-ai-price", file: "synthesise-ai-price.html", pri: "0.8", freq: "monthly" },
+  { path: "/how-to-create-a-digital-product-with-ai", file: "how-to-create-a-digital-product-with-ai.html", pri: "0.8", freq: "monthly" },
+  { path: "/digital-product-ideas-from-your-skills", file: "digital-product-ideas-from-your-skills.html", pri: "0.7", freq: "monthly" },
+];
+
 function serveStatic(req, res, pathname) {
-  const site = (process.env.SITE_URL || "").replace(/\/$/, "");
-  if (pathname === "/robots.txt") { res.writeHead(200, { "content-type": "text/plain" }); return res.end(`User-agent: *\nAllow: /\n${site ? "Sitemap: " + site + "/sitemap.xml\n" : ""}`); }
+  // The public address: SITE_URL if set (use your domain here), otherwise the host the visitor used.
+  const host = String(req.headers["x-forwarded-host"] || req.headers.host || "");
+  const proto = String(req.headers["x-forwarded-proto"] || "https").split(",")[0];
+  const site = (process.env.SITE_URL || (host && !/^(127\.|localhost)/.test(host) ? `${proto}://${host}` : "")).replace(/\/$/, "");
+  const base = site || `http://${host || "localhost"}`;
+  if (pathname === "/robots.txt") {
+    res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
+    return res.end(`User-agent: *\nAllow: /\nDisallow: /api/\n\n# AI search and answer engines are welcome to read the public pages\nUser-agent: GPTBot\nAllow: /\nUser-agent: ChatGPT-User\nAllow: /\nUser-agent: OAI-SearchBot\nAllow: /\nUser-agent: PerplexityBot\nAllow: /\nUser-agent: ClaudeBot\nAllow: /\nUser-agent: Google-Extended\nAllow: /\n\nSitemap: ${base}/sitemap.xml\n`);
+  }
   if (pathname === "/sitemap.xml") {
-    if (!site) { res.writeHead(404); return res.end(); }
-    res.writeHead(200, { "content-type": "application/xml" });
-    return res.end(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${site}/</loc></url><url><loc>${site}/synthesise-ai-alternative</loc></url></urlset>`);
+    const urls = PAGES.map((p) => {
+      const f = path.join(ROOT, "public", p.file);
+      let last = ""; try { last = fs.statSync(f).mtime.toISOString().slice(0, 10); } catch {}
+      return `<url><loc>${base}${p.path}</loc>${last ? `<lastmod>${last}</lastmod>` : ""}<changefreq>${p.freq}</changefreq><priority>${p.pri}</priority></url>`;
+    });
+    res.writeHead(200, { "content-type": "application/xml; charset=utf-8" });
+    return res.end(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join("")}</urlset>`);
   }
   let rel = pathname === "/" ? "/index.html" : pathname;
   if (!path.extname(rel) && fs.existsSync(path.join(ROOT, "public", rel + ".html"))) rel += ".html";
@@ -232,7 +252,14 @@ function serveStatic(req, res, pathname) {
   if (!file.startsWith(path.join(ROOT, "public"))) { res.writeHead(403); return res.end(); }
   fs.readFile(file, (err, buf) => {
     if (err) { res.writeHead(404, { "content-type": "text/plain" }); return res.end("Not found"); }
-    res.writeHead(200, { "content-type": MIME[path.extname(file)] || "application/octet-stream", "cache-control": "no-cache" });
+    const ext = path.extname(file);
+    res.writeHead(200, { "content-type": MIME[ext] || "application/octet-stream", "cache-control": "no-cache" });
+    if (ext === ".html") {
+      // fill in the public address and the optional Google Search Console verification tag
+      const gsc = process.env.GOOGLE_SITE_VERIFICATION ? `<meta name="google-site-verification" content="${String(process.env.GOOGLE_SITE_VERIFICATION).replace(/[^\w-]/g, "")}">` : "";
+      return res.end(buf.toString("utf8").replaceAll("{{SITE}}", base).replace("<!--GSC-->", gsc));
+    }
+    if (ext === ".txt") return res.end(buf.toString("utf8").replaceAll("{{SITE}}", base));
     res.end(buf);
   });
 }

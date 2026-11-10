@@ -225,6 +225,9 @@ const PAGES = [
   { path: "/synthesise-ai-price", file: "synthesise-ai-price.html", pri: "0.8", freq: "monthly" },
   { path: "/how-to-create-a-digital-product-with-ai", file: "how-to-create-a-digital-product-with-ai.html", pri: "0.8", freq: "monthly" },
   { path: "/digital-product-ideas-from-your-skills", file: "digital-product-ideas-from-your-skills.html", pri: "0.7", freq: "monthly" },
+  { path: "/ai-course-creator", file: "ai-course-creator.html", pri: "0.7", freq: "monthly" },
+  { path: "/digital-product-ideas-for-students", file: "digital-product-ideas-for-students.html", pri: "0.7", freq: "monthly" },
+  { path: "/how-to-write-an-ebook-with-ai", file: "how-to-write-an-ebook-with-ai.html", pri: "0.7", freq: "monthly" },
 ];
 
 function serveStatic(req, res, pathname) {

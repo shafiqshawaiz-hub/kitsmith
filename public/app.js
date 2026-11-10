@@ -334,7 +334,7 @@
     document.title = cfg.brand;
     $("brand").textContent = cfg.brand; $("footBrand").textContent = cfg.brand;
     $("demoBanner").hidden = !cfg.demo;
-    if (cfg.buyUrl) { const b = $("buyLink"); b.href = cfg.buyUrl; b.hidden = false; b.target = "_blank"; b.rel = "noopener"; }
+    if (cfg.buyUrl) for (const id of ["buyLink", "buyLink2"]) { const b = $(id); if (!b) continue; b.href = cfg.buyUrl; b.hidden = false; b.target = "_blank"; b.rel = "noopener"; }
     wire();
     if (S.code) { $("codeInput").value = S.code; await unlock(S.code, true); }
   }

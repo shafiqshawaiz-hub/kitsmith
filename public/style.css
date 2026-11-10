@@ -100,3 +100,18 @@ textarea { resize: vertical; }
 .refine { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 .refine input { flex: 1; min-width: 200px; }
 .sec-head > span { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* home page sections: sample, pricing, faq */
+.sample, .price, .faq { border-top: 1px solid var(--rule); padding-top: 56px; padding-bottom: 56px; }
+.price-line { margin-top: 14px; }
+.excerpt { margin: 20px 0 0; padding: 20px 22px; background: var(--panel); border: 1px solid var(--rule); border-left: 3px solid var(--accent); font-size: 16px; line-height: 1.65; }
+.excerpt .gap { color: var(--accent); }
+.price-card { border: 1px solid var(--rule); background: var(--panel); padding: 28px; max-width: 560px; }
+.price-card .big { font-family: Newsreader, Georgia, serif; font-size: 64px; line-height: 1; color: var(--accent); }
+.price-card ul { margin: 18px 0 22px; padding-left: 20px; color: var(--muted); }
+.price-card li { margin: 8px 0; }
+.price-card li strong { color: var(--ink); }
+.faq details { border-top: 1px solid var(--rule); padding: 14px 0; }
+.faq details:last-of-type { border-bottom: 1px solid var(--rule); }
+.faq summary { cursor: pointer; font-weight: 500; }
+.faq details p { margin: 10px 0 0; color: var(--muted); }

@@ -34,9 +34,17 @@
       <a href="/synthesise-ai-alternative" class="keep">Synthesise AI alternative</a>
       <a href="#app">Start</a>
       <span class="pill" id="creditPill" hidden></span>
+      <a href="#topup" class="keep" id="topupLink" hidden>Add credits</a>
     </nav>
   </div>
 </header>
+<section class="wrap" id="topup" hidden style="padding:14px 0">
+  <form id="topupForm" class="row">
+    <input id="topupInput" type="text" placeholder="Paste your new access code or Gumroad license key" autocomplete="off" spellcheck="false">
+    <button class="btn" type="submit">Add credits</button>
+  </form>
+  <p class="note" id="topupMsg" role="status"></p>
+</section>
 
 <main id="top">
   <section class="hero wrap">

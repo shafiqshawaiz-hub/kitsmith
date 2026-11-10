@@ -131,6 +131,18 @@ async function api(req, res, pathname) {
     return send(res, 200, { ok: true, left: st.owner ? null : st.left });
   }
 
+  if (pathname === "/api/topup") {
+    if (!st || st.owner) return send(res, 401, { error: "Unlock your account first." });
+    let b;
+    try { b = await readBody(req); } catch (err) { return send(res, err.status || 400, { error: err.message }); }
+    const add = String(b.code || "").trim();
+    if (!add) return send(res, 400, { error: "Paste the access code you want to add." });
+    try { await gumroad.redeem(add); } catch (err) { return send(res, err.status || 503, { error: err.message }); }
+    const r = codes.transfer(add, code);
+    if (r.error) return send(res, 400, { error: r.error });
+    return send(res, 200, { ok: true, moved: r.moved, left: r.left });
+  }
+
   const COST = { "/api/sweetspot": "sweetspot", "/api/blueprint": "blueprint", "/api/section": "section", "/api/refine": "refine" };
   const kind = COST[pathname];
   if (!kind) return send(res, 404, { error: "Not found." });

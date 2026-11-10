@@ -51,6 +51,7 @@
     p.hidden = false;
     unlimited = left === "unlimited";
     p.textContent = unlimited ? "Owner access" : `${left} credits left`;
+    $("topupLink").hidden = unlimited;
   }
 
   const steps = ["About you", "Idea", "Blueprint", "Build", "Export"];
@@ -311,6 +312,17 @@
   // ---- wiring ----
   function wire() {
     $("gateForm").addEventListener("submit", (e) => { e.preventDefault(); $("gateErr").textContent = ""; unlock($("codeInput").value); });
+    $("topupLink").addEventListener("click", (e) => { e.preventDefault(); const t = $("topup"); t.hidden = !t.hidden; if (!t.hidden) $("topupInput").focus(); });
+    $("topupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msg = $("topupMsg"); msg.textContent = "Checking...";
+      try {
+        const r = await post("/api/topup", { code: $("topupInput").value });
+        showCredits(String(r.left));
+        msg.textContent = `Added ${r.moved} credits. You now have ${r.left}.`;
+        $("topupInput").value = "";
+      } catch (err) { msg.textContent = err.message; }
+    });
     $("go1").addEventListener("click", findIdeas);
     $("back2").addEventListener("click", () => show(1));
     $("regen3").addEventListener("click", () => { S.format = $("fmt3").value; makeBlueprint(S.idea); });

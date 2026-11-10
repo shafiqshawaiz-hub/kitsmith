@@ -47,6 +47,16 @@
     <div class="gate" id="gate">
       <h2>Enter your access code</h2>
       <p class="note">Bought it on Gumroad? Paste the license key from your receipt. Your credits are added the first time you use it.</p>
+      <details class="note" id="keyHelp" open>
+        <summary>Where do I find my license key?</summary>
+        <ol>
+          <li>Right after you pay, Gumroad shows a page with your purchase. Your <strong>license key</strong> is on that page. It looks like <code>XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX</code>.</li>
+          <li>Gumroad also emails you a receipt. Open it and click <strong>View content</strong> to see the key again.</li>
+          <li>Lost both? Sign in to Gumroad with the email you bought with and open your <strong>Library</strong>, then open this product.</li>
+          <li>Copy the whole key, paste it in the box above and click Unlock.</li>
+        </ol>
+        <p>Still stuck? Reply to your Gumroad receipt email.</p>
+      </details>
       <form id="gateForm" class="row">
         <input id="codeInput" type="text" autocomplete="off" placeholder="Access code or Gumroad license key" aria-label="Access code or Gumroad license key">
         <button class="btn" type="submit">Unlock</button>

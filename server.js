@@ -127,7 +127,7 @@ async function api(req, res, pathname) {
   const st = codes.status(code);
 
   if (pathname === "/api/unlock") {
-    if (!st) return send(res, 401, { error: "That code was not found." });
+    if (!st) return send(res, 401, { error: "That code was not found. If you bought on Gumroad, copy the whole license key from your receipt page or email (View content). It has four groups of letters and numbers separated by dashes." });
     return send(res, 200, { ok: true, left: st.owner ? null : st.left });
   }
 

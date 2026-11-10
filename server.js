@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
 import * as codes from "./lib/codes.js";
 import * as products from "./lib/products.js";
+import * as gumroad from "./lib/gumroad.js";
 import { sweetSpotPrompt, blueprintPrompt, sectionPrompt, refinePrompt } from "./lib/prompts.js";
 import { demoSweetSpot, demoBlueprint, demoSection } from "./lib/demo.js";
 
@@ -120,6 +121,9 @@ async function api(req, res, pathname) {
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed." });
 
   const code = req.headers["x-access-code"];
+  // A Gumroad license key becomes an access code with credits the first time it is used.
+  try { await gumroad.redeem(code); }
+  catch (err) { return send(res, err.status || 503, { error: err.message }); }
   const st = codes.status(code);
 
   if (pathname === "/api/unlock") {

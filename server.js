@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import Anthropic from "@anthropic-ai/sdk";
 import * as codes from "./lib/codes.js";
+import * as products from "./lib/products.js";
 import { sweetSpotPrompt, blueprintPrompt, sectionPrompt, refinePrompt } from "./lib/prompts.js";
 import { demoSweetSpot, demoBlueprint, demoSection } from "./lib/demo.js";
 
@@ -130,17 +131,30 @@ async function api(req, res, pathname) {
   const kind = COST[pathname];
   if (!kind) return send(res, 404, { error: "Not found." });
   if (!st) return send(res, 401, { error: "Enter a valid access code first." });
-  if (!codes.spend(code, 1)) return send(res, 402, { error: "No credits left on this code." });
+
+  let body;
+  try { body = await readBody(req); }
+  catch (err) { return send(res, err.status || 400, { error: err.message }); }
+
+  // Work out the cost first. A new product is 25 credits (ideas, blueprint and every section once);
+  // any regeneration after that is 2 credits. See lib/products.js.
+  let p;
+  try { p = products.plan({ code, owner: st.owner, kind, body }); }
+  catch (err) { return send(res, err.status || 400, { error: err.message }); }
+  if (p.cost > 0 && !codes.spend(code, p.cost)) {
+    const what = p.isNew ? "A new product needs" : "This needs";
+    return send(res, 402, { error: `${what} ${p.cost} credits and your code has ${st.left} left.` });
+  }
+  products.begin(p);
   const left = () => { const s = codes.status(code); return s.owner ? "unlimited" : String(s.left); };
 
   try {
-    const body = await readBody(req);
-
     if (kind === "sweetspot") {
       const profile = cleanProfile(body.profile);
       const data = DEMO ? demoSweetSpot : await askJson("sweetspot", sweetSpotPrompt(profile));
       if (!Array.isArray(data.ideas)) throw new Error("Unexpected model output.");
-      return send(res, 200, data, { "x-credits-left": left() });
+      const product = p.isNew ? products.create(code) : p.productId;
+      return send(res, 200, product ? { ...data, product } : data, { "x-credits-left": left() });
     }
 
     if (kind === "blueprint") {
@@ -189,9 +203,10 @@ async function api(req, res, pathname) {
     if (final.stop_reason === "refusal") res.write("\n\n[[ERROR]] The model declined this section. Try regenerating.");
     return res.end();
   } catch (err) {
-    codes.refund(code, 1);
+    codes.refund(code, p.cost);
+    products.rollback(p);
     const status = err.status && err.status >= 400 && err.status < 600 ? err.status : 500;
-    const safe = status < 500 && err.message ? err.message : "Something went wrong generating this. Your credit was returned. Try again.";
+    const safe = status < 500 && err.message ? err.message : "Something went wrong generating this. Your credits were returned. Try again.";
     console.error("[api error]", pathname, err?.status, err?.message);
     if (res.headersSent) { res.write("\n\n[[ERROR]] " + safe); return res.end(); }
     return send(res, status, { error: safe });

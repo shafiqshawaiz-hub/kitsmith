@@ -2,7 +2,8 @@
   const $ = (id) => document.getElementById(id);
   const KEY = "kitsmith:v1";
   let cfg = { brand: "Kitsmith", buyUrl: "", demo: false };
-  let S = { code: "", profile: {}, summary: "", ideas: [], idea: null, charter: null, format: "guide", out: {}, step: 1 };
+  let S = { code: "", product: "", profile: {}, summary: "", ideas: [], idea: null, charter: null, format: "guide", out: {}, step: 1 };
+  let unlimited = false;
 
   const load = () => { try { Object.assign(S, JSON.parse(localStorage.getItem(KEY) || "{}")); } catch {} };
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} };
@@ -48,7 +49,8 @@
   function showCredits(left) {
     const p = $("creditPill");
     p.hidden = false;
-    p.textContent = left === "unlimited" ? "Owner access" : `${left} credits left`;
+    unlimited = left === "unlimited";
+    p.textContent = unlimited ? "Owner access" : `${left} credits left`;
   }
 
   const steps = ["About you", "Idea", "Blueprint", "Build", "Export"];
@@ -100,9 +102,16 @@
     $("e1").textContent = "";
     S.profile = readProfile(); save();
     if (S.profile.expertise.trim().length < 20) { $("e1").textContent = "Write a bit more about what you know (a couple of sentences)."; return; }
+    if (!unlimited) {
+      const ask = S.product
+        ? "Finding new ideas for this product costs 2 credits. Continue?"
+        : "Starting a new product costs 25 credits. That covers your ideas, blueprint and every section. Changes after that cost 2 credits each. Continue?";
+      if (!confirm(ask)) return;
+    }
     busy($("go1"), true, "Thinking...");
     try {
-      const r = await post("/api/sweetspot", { profile: S.profile });
+      const r = await post("/api/sweetspot", { profile: S.profile, product: S.product });
+      if (r.product) S.product = r.product;
       S.summary = r.summary || ""; S.ideas = r.ideas || []; S.idea = null; S.charter = null; S.out = {};
       if (S.profile.format === "guide" || S.profile.format === "course") S.format = S.profile.format;
       save(); renderIdeas(); show(2);
@@ -138,7 +147,7 @@
     $("blueprint").innerHTML = "<p>Building your blueprint...</p>";
     $("go3").disabled = true; $("regen3").disabled = true;
     try {
-      const r = await post("/api/blueprint", { profile: S.profile, idea, format: $("fmt3").value || S.format });
+      const r = await post("/api/blueprint", { profile: S.profile, idea, format: $("fmt3").value || S.format, product: S.product });
       S.charter = r; save(); renderBlueprint();
     } catch (e) {
       $("blueprint").innerHTML = "";
@@ -187,12 +196,12 @@
       <li data-k="${s.key}">
         <div class="sec-head"><strong>${esc(s.title)}</strong>
           <span><span class="state" id="st-${s.key}">${S.out[s.key] ? "Done" : "Not generated"}</span>
-          <button class="btn ghost gen" data-k="${s.key}">${S.out[s.key] ? "Redo (1 credit)" : "Generate (1 credit)"}</button>
+          <button class="btn ghost gen" data-k="${s.key}">${S.out[s.key] ? "Redo (2 credits)" : "Generate (included)"}</button>
           <button class="btn ghost view" data-k="${s.key}" ${S.out[s.key] ? "" : "hidden"}>View</button>
           <button class="btn ghost edit" data-k="${s.key}" ${S.out[s.key] ? "" : "hidden"}>Edit with AI</button></span></div>
         <form class="refine" id="rf-${s.key}" data-k="${s.key}" hidden>
           <input type="text" maxlength="800" placeholder="What should change? e.g. make it shorter, add a checklist, simpler words" aria-label="Requested change">
-          <button class="btn" type="submit">Apply (1 credit)</button>
+          <button class="btn" type="submit">Apply (2 credits)</button>
         </form>
         <div class="sec-body md" id="body-${s.key}" hidden>${S.out[s.key] ? md(S.out[s.key]) : ""}</div>
       </li>`).join("");
@@ -211,7 +220,7 @@
     body.hidden = false; body.innerHTML = "";
     let text = "";
     try {
-      const res = await post("/api/section", { kind: sec.kind, index: sec.index, charter: S.charter }, true);
+      const res = await post("/api/section", { kind: sec.kind, index: sec.index, charter: S.charter, product: S.product }, true);
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       for (;;) {
@@ -224,7 +233,7 @@
       const errAt = text.indexOf("[[ERROR]]");
       if (errAt >= 0) throw new Error(text.slice(errAt + 9).trim() || "Generation failed.");
       S.out[sec.key] = text.trim(); save();
-      stEl.textContent = "Done"; btn.textContent = "Redo (1 credit)";
+      stEl.textContent = "Done"; btn.textContent = "Redo (2 credits)";
       document.querySelector(`.view[data-k="${sec.key}"]`).hidden = false;
       document.querySelector(`.edit[data-k="${sec.key}"]`).hidden = false;
       return true;
@@ -248,7 +257,7 @@
     body.hidden = false;
     let text = "";
     try {
-      const res = await post("/api/refine", { text: S.out[sec.key], instruction }, true);
+      const res = await post("/api/refine", { text: S.out[sec.key], instruction, product: S.product }, true);
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       for (;;) {
@@ -312,7 +321,7 @@
     $("dlMd").addEventListener("click", () => download(slug() + ".md", fullMarkdown(), "text/markdown"));
     $("dlHtml").addEventListener("click", () => download(slug() + ".html", htmlDoc(), "text/html"));
     $("printPdf").addEventListener("click", () => { const w = window.open("", "_blank"); if (!w) return; w.document.write(htmlDoc()); w.document.close(); w.focus(); setTimeout(() => w.print(), 400); });
-    $("reset").addEventListener("click", () => { if (confirm("Start over? This clears your current product from this browser.")) { const c = S.code; S = { code: c, profile: {}, summary: "", ideas: [], idea: null, charter: null, format: "guide", out: {}, step: 1 }; save(); resume(); } });
+    $("reset").addEventListener("click", () => { if (confirm("Start over? This clears your current product from this browser.")) { const c = S.code; S = { code: c, product: "", profile: {}, summary: "", ideas: [], idea: null, charter: null, format: "guide", out: {}, step: 1 }; save(); resume(); } });
     $("toExport").addEventListener("click", () => {
       if (!Object.keys(S.out).length) { $("e4").textContent = "Generate at least one section first."; return; }
       show(5);

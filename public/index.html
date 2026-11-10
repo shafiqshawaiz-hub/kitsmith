@@ -66,7 +66,7 @@
         <input id="audience" type="text" placeholder="Leave blank and it will suggest audiences.">
         <label for="format">Format</label>
         <select id="format"><option value="">Not sure</option><option value="guide">Written guide (PDF)</option><option value="course">Video course (scripts)</option></select>
-        <p><button class="btn" id="go1">Find my best ideas</button> <span class="cost">uses 1 credit</span></p>
+        <p><button class="btn" id="go1">Find my best ideas</button> <span class="cost">a new product uses 25 credits</span></p>
         <p class="err" id="e1" role="alert"></p>
       </div>
 
@@ -84,7 +84,7 @@
         <p class="row-gap">
           <label for="fmt3" class="inline">Build as</label>
           <select id="fmt3"><option value="guide">Written guide</option><option value="course">Video course</option></select>
-          <button class="btn ghost" id="regen3">Rebuild blueprint (1 credit)</button>
+          <button class="btn ghost" id="regen3">Rebuild blueprint (2 credits)</button>
           <button class="btn" id="go3">Start building</button>
         </p>
         <p class="err" id="e3" role="alert"></p>
@@ -92,7 +92,7 @@
 
       <div class="panel" id="p4" hidden>
         <h2>4. Build</h2>
-        <p class="note">Each section uses 1 credit. Generate them one by one, or all at once.</p>
+        <p class="note">Writing every section once is included in your 25 credits. Redoing a section or editing it with AI costs 2 credits each. Generate them one by one, or all at once.</p>
         <p><button class="btn" id="genAll">Generate all remaining</button> <button class="btn ghost" id="stopAll" hidden>Stop</button> <button class="btn ghost" id="toExport">Go to export</button></p>
         <ul class="sections" id="sections"></ul>
         <p class="err" id="e4" role="alert"></p>
@@ -107,7 +107,7 @@
           <button class="btn" id="printPdf">Print or save as PDF</button>
         </p>
         <div class="preview" id="preview"></div>
-        <p><button class="btn ghost" id="reset">Start a new product</button></p>
+        <p><button class="btn ghost" id="reset">Start a new product (25 credits)</button></p>
       </div>
     </div>
   </section>

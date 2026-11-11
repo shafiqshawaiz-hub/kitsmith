@@ -9,6 +9,11 @@
 - Last checked: 2026-11-10.
 
 ## Pages
+- [What is Kitsmith]({{SITE}}/what-is-kitsmith): a plain definition, how it works, cost and limits.
+- [Kitsmith vs a general AI chat assistant]({{SITE}}/kitsmith-vs-chatgpt): what a fixed workflow adds and when to skip it.
+- [AI course creator]({{SITE}}/ai-course-creator): how to turn what you know into a video course.
+- [Digital product ideas for students]({{SITE}}/digital-product-ideas-for-students): eight starting ideas.
+- [How to write an ebook with AI]({{SITE}}/how-to-write-an-ebook-with-ai): a step-by-step order that works.
 - [Home]({{SITE}}/): what Kitsmith does, pricing and FAQ.
 - [Synthesise AI alternative]({{SITE}}/synthesise-ai-alternative): an honest comparison with Synthesise AI, including what Kitsmith lacks.
 - [Synthesise AI price]({{SITE}}/synthesise-ai-price): what Synthesise AI's own site lists (one-time $2,999 as of 2026-11-09) and why sources disagree.

@@ -240,6 +240,8 @@ const PAGES = [
   { path: "/ai-course-creator", file: "ai-course-creator.html", pri: "0.7", freq: "monthly" },
   { path: "/digital-product-ideas-for-students", file: "digital-product-ideas-for-students.html", pri: "0.7", freq: "monthly" },
   { path: "/how-to-write-an-ebook-with-ai", file: "how-to-write-an-ebook-with-ai.html", pri: "0.7", freq: "monthly" },
+  { path: "/what-is-kitsmith", file: "what-is-kitsmith.html", pri: "0.9", freq: "monthly" },
+  { path: "/kitsmith-vs-chatgpt", file: "kitsmith-vs-chatgpt.html", pri: "0.7", freq: "monthly" },
 ];
 
 function serveStatic(req, res, pathname) {

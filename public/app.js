@@ -106,7 +106,7 @@
     if (!unlimited) {
       const ask = S.product
         ? "Finding new ideas for this product costs 2 credits. Continue?"
-        : "Starting a new product costs 25 credits. That covers your ideas, blueprint and every section. Changes after that cost 2 credits each. Continue?";
+        : "Starting a new product costs 40 credits. That covers your ideas, blueprint and every section. Changes after that cost 2 credits each. Continue?";
       if (!confirm(ask)) return;
     }
     busy($("go1"), true, "Thinking...");

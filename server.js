@@ -152,7 +152,7 @@ async function api(req, res, pathname) {
   try { body = await readBody(req); }
   catch (err) { return send(res, err.status || 400, { error: err.message }); }
 
-  // Work out the cost first. A new product is 25 credits (ideas, blueprint and every section once);
+  // Work out the cost first. A new product is 40 credits (ideas, blueprint and every section once);
   // any regeneration after that is 2 credits. See lib/products.js.
   let p;
   try { p = products.plan({ code, owner: st.owner, kind, body }); }

@@ -11,12 +11,12 @@
 {"@context":"https://schema.org","@graph":[
 {"@type":"WebSite","name":"Kitsmith","url":"{{SITE}}/"},
 {"@type":"Organization","name":"Kitsmith","url":"{{SITE}}/","logo":"{{SITE}}/og.png","sameAs":["https://www.instagram.com/kitsmithh.ai/","https://github.com/shafiqshawaiz-hub/kitsmith"]},
-{"@type":"SoftwareApplication","name":"Kitsmith","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"{{SITE}}/","description":"AI tool that finds a digital product idea from what you know, plans it, and writes the first draft of a guide or video course.","offers":{"@type":"Offer","price":"69.00","priceCurrency":"USD","description":"100 credits, one time. One product costs 25 credits."}}
+{"@type":"SoftwareApplication","name":"Kitsmith","applicationCategory":"BusinessApplication","operatingSystem":"Web","url":"{{SITE}}/","description":"AI tool that finds a digital product idea from what you know, plans it, and writes the first draft of a guide or video course.","offers":{"@type":"Offer","price":"69.00","priceCurrency":"USD","description":"100 credits, one time. One product costs 40 credits."}}
 ]}
 </script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="Kitsmith: turn what you know into a product you can sell">
-<meta property="og:description" content="It finds the idea, plans the product and writes the first draft of your guide or video course. 100 credits builds 4 products.">
+<meta property="og:description" content="It finds the idea, plans the product and writes the first draft of your guide or video course. 100 credits builds 2 products.">
 <meta property="og:image" content="{{SITE}}/og.png">
 <meta property="og:url" content="{{SITE}}/">
 <meta name="twitter:card" content="summary_large_image">
@@ -52,7 +52,7 @@
     <h1>Turn what you know into a product you can sell.</h1>
     <p class="lede">Tell it what you know. It finds the idea worth building, plans the product, and drafts the whole guide or video course, section by section. You edit it and sell it.</p>
     <p class="cta-row"><a class="btn" id="buyLink" href="#" hidden>Get 100 credits for $69</a> <a class="btn ghost" href="#app">I have a code</a></p>
-    <p class="note price-line">100 credits builds 4 products. One product is 25 credits. Instant license key after you pay. No refunds.</p>
+    <p class="note price-line">100 credits builds 2 products. One product is 40 credits. Instant license key after you pay. No refunds.</p>
   </section>
 
   <section class="wrap rules" id="how">
@@ -85,8 +85,8 @@
     <div class="price-card">
       <div class="big">$69</div>
       <ul>
-        <li><strong>100 credits</strong>, which builds 4 products</li>
-        <li>One product is <strong>25 credits</strong>: ideas, blueprint and every section drafted once</li>
+        <li><strong>100 credits</strong>, which builds 2 products</li>
+        <li>One product is <strong>40 credits</strong>: ideas, blueprint and every section drafted once</li>
         <li>Changes cost <strong>2 credits</strong> each: redo a section, AI edit, rebuild the blueprint, find new ideas</li>
         <li>Credits do not expire</li>
         <li>Your license key arrives the moment you pay</li>
@@ -99,7 +99,7 @@
     <h2>Questions</h2>
     <details><summary>Is the writing ready to sell?</summary><p>It is a first draft. You add your own real examples, results and proof, and check the facts before you publish. Kitsmith leaves marked gaps where your own material goes.</p></details>
     <details><summary>Can I get a refund?</summary><p>No. All sales are final, so read this page before you buy. If an AI step fails while you are building, the credits for that step come back to you automatically.</p></details>
-    <details><summary>What is a credit?</summary><p>Starting a product costs 25 credits and covers the ideas, the blueprint and the first draft of every section. After that, each redo, AI edit, blueprint rebuild or new ideas run costs 2 credits.</p></details>
+    <details><summary>What is a credit?</summary><p>Starting a product costs 40 credits and covers the ideas, the blueprint and the first draft of every section. After that, each redo, AI edit, blueprint rebuild or new ideas run costs 2 credits.</p></details>
     <details><summary>Where do I find my license key?</summary><p>On the page Gumroad shows right after you pay, and in your Gumroad receipt email under "View content". Paste it into the access code box on this page.</p></details>
     <details><summary>Will it promise that my product sells?</summary><p>No. No tool can. It helps you find an idea, plan it and draft it. You still have to test demand and sell it.</p></details>
     <details><summary>What AI does it use?</summary><p>Kitsmith runs on Anthropic's Claude. The text it writes is AI-generated, so say so where the rules of your store require it.</p></details>
@@ -139,7 +139,7 @@
         <input id="audience" type="text" placeholder="Leave blank and it will suggest audiences.">
         <label for="format">Format</label>
         <select id="format"><option value="">Not sure</option><option value="guide">Written guide (PDF)</option><option value="course">Video course (scripts)</option></select>
-        <p><button class="btn" id="go1">Find my best ideas</button> <span class="cost">a new product uses 25 credits</span></p>
+        <p><button class="btn" id="go1">Find my best ideas</button> <span class="cost">a new product uses 40 credits</span></p>
         <p class="err" id="e1" role="alert"></p>
       </div>
 
@@ -165,7 +165,7 @@
 
       <div class="panel" id="p4" hidden>
         <h2>4. Build</h2>
-        <p class="note">Writing every section once is included in your 25 credits. Redoing a section or editing it with AI costs 2 credits each. Generate them one by one, or all at once.</p>
+        <p class="note">Writing every section once is included in your 40 credits. Redoing a section or editing it with AI costs 2 credits each. Generate them one by one, or all at once.</p>
         <p><button class="btn" id="genAll">Generate all remaining</button> <button class="btn ghost" id="stopAll" hidden>Stop</button> <button class="btn ghost" id="toExport">Go to export</button></p>
         <ul class="sections" id="sections"></ul>
         <p class="err" id="e4" role="alert"></p>
@@ -180,7 +180,7 @@
           <button class="btn" id="printPdf">Print or save as PDF</button>
         </p>
         <div class="preview" id="preview"></div>
-        <p><button class="btn ghost" id="reset">Start a new product (25 credits)</button></p>
+        <p><button class="btn ghost" id="reset">Start a new product (40 credits)</button></p>
       </div>
     </div>
   </section>

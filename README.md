@@ -17,7 +17,7 @@ Model defaults to claude-opus-5-5. Set MODEL in .env to change it (a cheaper mod
     node admin.js create 30 "order 1234"   # makes a code with 30 credits
     node admin.js list
 Give the code to the buyer (for example as the Gumroad file or license text). Put your Gumroad link in BUY_URL in .env to show a "Get an access code" button.
-Credits: a new product costs 25 credits and includes the ideas run, the blueprint and the first generation of every section. Any regeneration after that (redo a section, AI edit, rebuild the blueprint, re-run the ideas) costs 2 credits. The server tracks each product in data/products.json. A 100 credit pack is 4 products.
+Credits: a new product costs 40 credits and includes the ideas run, the blueprint and the first generation of every section. Any regeneration after that (redo a section, AI edit, rebuild the blueprint, re-run the ideas) costs 2 credits. The server tracks each product in data/products.json. A 100 credit pack is 2 products.
 Your own OWNER_CODE in .env is unlimited.
 
 ## Publish

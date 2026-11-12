@@ -1,6 +1,6 @@
 # Kitsmith
 
-> Kitsmith is a small AI tool that turns what you know into a digital product. You type a few sentences about your skills. It suggests three product ideas with a way to test demand, plans one, and writes the first draft of a guide or a video course (with spoken scripts), plus sales page text. It costs $69 one time for 100 credits. One new product costs 25 credits, so 100 credits builds 4 products. Each redo or AI edit costs 2 credits. All sales are final. It runs on Anthropic's Claude and produces first drafts that the user must edit and fact-check. It is not affiliated with Synthesise AI, Iman Gadzhi, or any course.
+> Kitsmith is a small AI tool that turns what you know into a digital product. You type a few sentences about your skills. It suggests three product ideas with a way to test demand, plans one, and writes the first draft of a guide or a video course (with spoken scripts), plus sales page text. It costs $69 one time for 100 credits. One new product costs 40 credits, so 100 credits builds 2 products. Each redo or AI edit costs 2 credits. All sales are final. It runs on Anthropic's Claude and produces first drafts that the user must edit and fact-check. It is not affiliated with Synthesise AI, Iman Gadzhi, or any course.
 
 ## Key facts
 - Price: $69 one time, 100 credits (sold on Gumroad; the buyer gets a license key and pastes it into the site).
